@@ -9,6 +9,6 @@ app.listen(port, () => {
 });
 
 // Create GET route; we will fetch it from our client side app
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
     res.send({express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT'});
 });

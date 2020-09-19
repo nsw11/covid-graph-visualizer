@@ -1,0 +1,25 @@
+{
+  "name": "covid-graph-visualizer",
+  "version": "1.0.0",
+  "description": "A full-stack web application built in React, NodeJS, and Express (?) for HackMIT 2020",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bjma/covid-graph-visualizer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bjma/covid-graph-visualizer/issues"
+  },
+  "homepage": "https://github.com/bjma/covid-graph-visualizer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.6.2",
+    "sigma": "^2.0.0-alpha40"
+  }
+}

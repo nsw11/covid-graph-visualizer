@@ -4,7 +4,7 @@
   "description": "A full-stack web application built in React, NodeJS, and Express (?) for HackMIT 2020",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -18,12 +18,13 @@
   },
   "homepage": "https://github.com/bjma/covid-graph-visualizer#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.6",
-    "sigma": "^2.0.0-alpha40",
-    "uuid": "^8.3.0",
     "nodemon": "^2.0.4",
-    "sigma": "^2.0.0-alpha40"
+    "sigma": "^2.0.0-alpha40",
+    "uuid": "^8.3.0"
   }
 }

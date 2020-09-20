@@ -7,11 +7,11 @@ const schema = mongoose.Schema({
     uuid: Number, 
     x: Number,
     y: Number,
-    state: {
+    status: {
         type: String,
         enum: ["untested", "tested positive", "tested negative", "exposed"],
     },
-    friend: Array,
+    friends: Array,
 });
 
 // create new mongoose model using schema and export

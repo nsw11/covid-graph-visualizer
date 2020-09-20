@@ -1,7 +1,11 @@
 // Create express instance
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const fs = require('fs');
+// Import routes
+const routes = require("./routes/routes");
 
 // Gets credentials by parsing JSON string to object
 const credentials = JSON.parse(
@@ -13,21 +17,24 @@ const credentials = JSON.parse(
 }));
 
 // Connection URI
-const uri = 'mongodb+srv://'.concat(credentials.username, ':', credentials.password, '@cluster-0.zpn5l.mongodb.net/cluster-o?retryWrites=true&w=majority');
+const uri = 'mongodb+srv://'.concat(credentials.username, ':', credentials.password, '@cluster-0.zpn5l.mongodb.net/covid?retryWrites=true&w=majority');
 // Port
 const port = 5000;
 
 // Connect Mongoose to MongoDB
-mongoose
-    .connect(uri, {useNewUrlParser: true})
-    .then(() => {
-        const app = express();
-        // Create GET route; we will fetch it from our client side app
-        app.get('/api', (req, res) => {
-            res.send({express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT'});
-        });
-        
-        app.listen(port, () => {
-            console.log(`Listening on port ${port}`);
-        });
+mongoose.connect(uri, {useNewUrlParser: true});
+const connection = mongoose.connection;
+
+connection.once('open', () => console.log('successfully connected to db'))
+
+// Create express instance
+const app = express();
+
+app.use(cors());
+app.use(bodyParser.json());
+// Need to have path be here otherwise we won't be able to get server
+app.use('/', routes);
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}`);
 });

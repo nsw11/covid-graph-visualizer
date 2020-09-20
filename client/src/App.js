@@ -4,8 +4,10 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: null,
-            firstName: "",
+            userName: "",
+            uuid: 1234,
+            x: 1,
+            y: 1,
             status: "",
             friends: [],
         };
@@ -22,7 +24,7 @@ class App extends Component {
     // Fetches our GET route from the Express server
     callAPI = async () => {
         // Fetch response
-        const response = await fetch('/api');
+        const response = await fetch('/');
         // Get response as JSON 
         const body = await response.json();
         console.log(body);
@@ -37,7 +39,10 @@ class App extends Component {
         event.preventDefault();
 
         const payload = {
-            firstName: this.state.firstName,
+            userName: this.state.userName,
+            uuid: this.state.uuid,
+            x: this.state.x,
+            y: this.state.y,
             status: this.state.status,
             friends: this.state.friends,
         };

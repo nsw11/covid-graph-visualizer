@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 // schema for graph node
 const schema = mongoose.Schema({
     name: String,
-    uuid: Number, 
+    uuid: String, 
     x: Number,
     y: Number,
     status: {

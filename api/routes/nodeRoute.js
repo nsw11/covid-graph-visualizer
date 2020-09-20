@@ -4,8 +4,14 @@ const router = express.Router();
 
 const Node = require('../models/node.model');
 
-router.get('/', (req, res) => {
-    res.send(req.body);
+// Gets all nodes in DB and their information
+router.get('/', async (req, res) => {
+    try {
+         const nodes = await Node.find();
+         res.send(nodes);
+    } catch (err) {
+        res.json({ message: err});
+    }
 });
 
 // Adds new node to our database
@@ -21,7 +27,6 @@ router.post('/', async (req, res) => {
     try {
         const savedNode = await node.save();
         res.json(savedNode);
-        console.log("HTTP request received");
     } catch (err) {
         res.json({ message: err });
     }

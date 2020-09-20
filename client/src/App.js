@@ -10,7 +10,7 @@ class App extends Component {
     componentDidMount() {
         // res should be a JSON
         this.callAPI()
-            .then(res => this.setState({ nodes: Object.values(res) }))
+            .then(res => this.setState({ nodes: res }))
             .catch(err => console.log(err));
     }
 
@@ -33,7 +33,6 @@ class App extends Component {
         console.log(this.state);
         return (
             <div className="App">
-                <p>{this.state.nodes}</p>
             </div>
         )
     }

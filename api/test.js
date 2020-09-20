@@ -1,8 +1,20 @@
 const { MongoClient } = require("mongodb");
+const fs = require('fs');
+
+let db_username = '';
+let db_password = '';
+
+const credentials = JSON.parse(
+fs.readFileSync('login.json', 'utf8', function (err,data) {
+  if (err) {
+    return console.log(err);
+  }
+  console.log(data);
+}));
 
 // Connection URI
-const uri =
-  "mongodb+srv://bigbrain:vermin-supreme@cluster-0.zpn5l.mongodb.net/cluster-o?retryWrites=true&w=majority";
+const uri = 'mongodb+srv://'.concat(credentials.username, ':', credentials.password, '@cluster-0.zpn5l.mongodb.net/cluster-o?retryWrites=true&w=majority');
+
 // Create a new MongoClient
 const client = new MongoClient(uri);
 
@@ -22,16 +34,6 @@ async function run() {
 
     database = client.db("covid");
     collection = database.collection("usergraph");
-
-    // Query for a movie that has the title 'The Room'
-    /*const query = { firstname: "Mike" };
-
-    const options = {
-      // sort matched documents in descending order by rating
-      // sort: { rating: -1 },
-      // Include only the `title` and `imdb` fields in the returned document
-      projection: { status: 1},
-    };*/
 
     const movie = await get_covid_status(collection, "Mike");
 

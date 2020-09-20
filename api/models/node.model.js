@@ -15,5 +15,5 @@ const schema = mongoose.Schema({
 });
 
 // create new mongoose model using schema and export
-module.exports = mongoose.model("GraphNode", schema);
+module.exports = mongoose.model("Node", schema);
 

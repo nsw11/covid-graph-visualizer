@@ -2,7 +2,7 @@
 const express = require("express");
 const router = express.Router();
 
-const GraphNode = require('../models/GraphNode');
+const Node = require('../models/node.model');
 
 
 

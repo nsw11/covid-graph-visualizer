@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 // Import routes
-const routes = require("./routes/routes");
 
 // Gets credentials by parsing JSON string to object
 const credentials = JSON.parse(
@@ -32,8 +31,6 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-// Need to have path be here otherwise we won't be able to get server
-app.use('/', routes);
 
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);

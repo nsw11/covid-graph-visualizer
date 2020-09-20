@@ -1,0 +1,134 @@
+<!-- START SIGMA IMPORTS, This has all of the imports for Sigma.js -->
+<script src="../src/sigma.core.js"></script>
+<script src="../src/conrad.js"></script>
+<script src="../src/utils/sigma.utils.js"></script>
+<script src="../src/utils/sigma.polyfills.js"></script>
+<script src="../src/sigma.settings.js"></script>
+<script src="../src/classes/sigma.classes.dispatcher.js"></script>
+<script src="../src/classes/sigma.classes.configurable.js"></script>
+<script src="../src/classes/sigma.classes.graph.js"></script>
+<script src="../src/classes/sigma.classes.camera.js"></script>
+<script src="../src/classes/sigma.classes.quad.js"></script>
+<script src="../src/classes/sigma.classes.edgequad.js"></script>
+<script src="../src/captors/sigma.captors.mouse.js"></script>
+<script src="../src/captors/sigma.captors.touch.js"></script>
+<script src="../src/renderers/sigma.renderers.canvas.js"></script>
+<script src="../src/renderers/sigma.renderers.webgl.js"></script>
+<script src="../src/renderers/sigma.renderers.svg.js"></script>
+<script src="../src/renderers/sigma.renderers.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="../src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="../src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="../src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="../src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="../src/misc/sigma.misc.animation.js"></script>
+<script src="../src/misc/sigma.misc.bindEvents.js"></script>
+<script src="../src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="../src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS this next is the import for the parser -->
+<script src="../plugins/sigma.parsers.json/sigma.parsers.json.js"></script>
+
+<!-- Basic container that graph will go in, since the graph is the only thing on the page, it is centered right now-->
+<div id="container">
+  <style>
+    #graph-container {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+    }
+  </style>
+  <div id="graph-container"></div>
+</div>
+
+
+<!--Scripts for the forceAtlas2 plugin. The Force Atlas 2 plug in makes nodes acted like charged particles connected to their edges. This 
+gets them to spread out algorithmically like repelling particles.-->
+<script src="../plugins/sigma.layout.forceAtlas2/worker.js"></script>
+<script src="../plugins/sigma.layout.forceAtlas2/supervisor.js"></script>
+
+
+<script> /*This declares the Sigma graph explicitly.*/
+
+  var g = {
+      nodes: [],//nodes is an array of all node elements they should all have elements 
+      /*
+      1.label- The name that will appear when looking at the node for the webpage. Notably, this should be obfuscated beyond the 2nd degree
+      2.x- The x coordinate Since we find the location algorithmically, we randomly generate this so it does not matter what this is set to
+      3.y- The y coordinateSince we find the location algorithmically, we randomly generate this so it does not matter what this is set to
+      4.ID- The unique ID of the node. From the backend this is a renaming of the uuid. This is most important for nodes as this is how nodes
+      get connected together using edges.
+      5.color- Color is written in format rgb(int a, int b, int c). This denotes what color the node is. This should be based on Covid status in
+      back end
+      6. Size- The size of the Node. The size should start at 3 and reduce by 1 every iteration away from origin node. This should all be handled
+      in the backend. 
+      */
+      edges: []//edges is an array of all edges and should have all these elements
+      /*
+      1.source- the ID of the first node.
+      2.destination- The ID of the connecting node.
+      NOTE: Sigma.js has directed graph support but this project does not use that so which node is source or destination is not important.
+      3. ID- Every element needs to have a unique ID. These should be generated uuids from the backend.
+      */
+    };
+  var s = new sigma({// The creation of the sigma element itself, it has the graph element, as well as linked container that we declared above
+    graph: g,//graph element
+    container: 'graph-container',
+    renderer: {
+        container: document.getElementById('graph-container'),
+        type: 'canvas'// projection rendering are done using canvas
+    },
+    settings: {//settings for sigma,
+        minNodeSize: 8,
+        maxNodeSize: 16
+    }
+});
+
+ sigma.parsers.json( /* This block is the parser that reads the JSOM file and places it in the node and edge array */
+        'data/people.json',// This line should have the file path to parse JSON and a comma like so 'JSON PATH', this is currently dummy data to be replaced with new set
+        s,
+        function() {
+            // this is needed in case the original JSON doesn't have color / size / x-y attributes 
+            var i,
+                    nodes = s.graph.nodes(),
+                    len = nodes.length;
+
+            for (i = 0; i < len; i++) {
+                nodes[i].x = Math.random();//sets node x coordinate randomly
+                nodes[i].y = Math.random();//sets node y cordinate randomly
+                //nodes[i].size = Math.random(); /* randomly generates coords & size, This is just for testing reasons, you should comment this line out*/
+                //nodes[i].color = '#' + '0086FF'; /* colors nodes blue, should be edited out once color functionality comes in */
+            };
+
+
+            // Refresh the display:
+            s.refresh();//refreshes the display so that all changes happen as expected
+
+            // ForceAtlas Layout
+            s.startForceAtlas2();// This initializes ForceAtlas2, which allows the program to spread out algorithmically.
+        }
+ );
+
+
+</script>

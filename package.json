@@ -16,5 +16,6 @@
   "bugs": {
     "url": "https://github.com/bjma/covid-graph-visualizer/issues"
   },
-  "homepage": "https://github.com/bjma/covid-graph-visualizer#readme"
+  "homepage": "https://github.com/bjma/covid-graph-visualizer#readme",
+  "dependencies": {}
 }

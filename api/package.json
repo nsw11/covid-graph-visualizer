@@ -4,7 +4,7 @@
   "description": "A full-stack web application built in React, NodeJS, and Express (?) for HackMIT 2020",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "devStart": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,8 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.6",
     "sigma": "^2.0.0-alpha40",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "nodemon": "^2.0.4",
+    "sigma": "^2.0.0-alpha40"
   }
 }
